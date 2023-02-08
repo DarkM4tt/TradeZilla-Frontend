@@ -1,13 +1,13 @@
 export const addItem = (item = [], count = 0, next = (f) => f) => {
-  let cart = []
-  if (typeof window !== 'undefined') {
-    if (localStorage.getItem('cart')) {
-      cart = JSON.parse(localStorage.getItem('cart'))
+  let cart = [];
+  if (typeof window !== "undefined") {
+    if (localStorage.getItem("cart")) {
+      cart = JSON.parse(localStorage.getItem("cart"));
     }
     cart.push({
       ...item,
       count: 1,
-    })
+    });
 
     // remove duplicates
     // build an Array from new Set and turn it back into array using Array.from
@@ -19,70 +19,70 @@ export const addItem = (item = [], count = 0, next = (f) => f) => {
     // run map() on it again and return the actual product from the cart
 
     cart = Array.from(new Set(cart.map((p) => p._id))).map((id) => {
-      return cart.find((p) => p._id === id)
-    })
+      return cart.find((p) => p._id === id);
+    });
 
-    localStorage.setItem('cart', JSON.stringify(cart))
-    next()
+    localStorage.setItem("cart", JSON.stringify(cart));
+    next();
   }
-}
+};
 
 export const itemTotal = () => {
-  if (typeof window !== 'undefined') {
-    if (localStorage.getItem('cart')) {
-      return JSON.parse(localStorage.getItem('cart')).length
+  if (typeof window !== "undefined") {
+    if (localStorage.getItem("cart")) {
+      return JSON.parse(localStorage.getItem("cart")).length;
     }
   }
-  return 0
-}
+  return 0;
+};
 
 export const getCart = () => {
-  if (typeof window !== 'undefined') {
-    if (localStorage.getItem('cart')) {
-      return JSON.parse(localStorage.getItem('cart'))
+  if (typeof window !== "undefined") {
+    if (localStorage.getItem("cart")) {
+      return JSON.parse(localStorage.getItem("cart"));
     }
   }
-  return []
-}
+  return [];
+};
 
 export const updateItem = (productId, count) => {
-  let cart = []
-  if (typeof window !== 'undefined') {
-    if (localStorage.getItem('cart')) {
-      cart = JSON.parse(localStorage.getItem('cart'))
+  let cart = [];
+  if (typeof window !== "undefined") {
+    if (localStorage.getItem("cart")) {
+      cart = JSON.parse(localStorage.getItem("cart"));
     }
 
     cart.map((product, i) => {
       if (product._id === productId) {
-        cart[i].count = count
+        cart[i].count = count;
       }
-    })
+    });
 
-    localStorage.setItem('cart', JSON.stringify(cart))
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
-}
+};
 
 export const removeItem = (productId) => {
-  let cart = []
-  if (typeof window !== 'undefined') {
-    if (localStorage.getItem('cart')) {
-      cart = JSON.parse(localStorage.getItem('cart'))
+  let cart = [];
+  if (typeof window !== "undefined") {
+    if (localStorage.getItem("cart")) {
+      cart = JSON.parse(localStorage.getItem("cart"));
     }
 
     cart.map((product, i) => {
       if (product._id === productId) {
-        cart.splice(i, 1)
+        cart.splice(i, 1);
       }
-    })
+    });
 
-    localStorage.setItem('cart', JSON.stringify(cart))
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
-  return cart
-}
+  return cart;
+};
 
 export const emptyCart = (next) => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('cart')
-    next()
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("cart");
+    next();
   }
-}
+};
