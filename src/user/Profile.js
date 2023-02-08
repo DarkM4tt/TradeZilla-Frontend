@@ -16,23 +16,20 @@ const Profile = ({ match }) => {
   const { token } = isAuthenticated();
   const { name, email, password, success } = values;
 
-  const init = useCallback(
-    (userId) => {
-      // console.log(userId);
-      read(userId, token).then((data) => {
-        if (data.error) {
-          setValues({ ...values, error: true });
-        } else {
-          setValues({ ...values, name: data.name, email: data.email });
-        }
-      });
-    },
-    [token, values]
-  );
+  const init = useCallback((userId) => {
+    // console.log(userId);
+    read(userId, token).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: true });
+      } else {
+        setValues({ ...values, name: data.name, email: data.email });
+      }
+    });
+  }, []);
 
   useEffect(() => {
     init(match.params.userId);
-  }, [match.params.userId, init]);
+  }, []);
 
   const handleChange = (name) => (e) => {
     setValues({ ...values, error: false, [name]: e.target.value });

@@ -25,7 +25,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     init(_id, token);
-  }, [_id, token]);
+  }, []);
 
   const userLinks = () => {
     return (
