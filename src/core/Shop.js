@@ -16,26 +16,32 @@ const Shop = () => {
   const [skip, setSkip] = useState(0);
   const [size, setSize] = useState(0);
   const [filteredResults, setFilteredResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const init = () => {
+    setLoading(true);
     getCategories().then((data) => {
       if (data.error) {
         setError(data.error);
+        setLoading(false);
       } else {
         setCategories(data);
+        setLoading(false);
       }
     });
   };
 
   const loadFilteredResults = (newFilters) => {
-    // console.log(newFilters);
+    setLoading(true);
     getFilteredProducts(skip, limit, newFilters).then((data) => {
       if (data.error) {
         setError(data.error);
+        setLoading(false);
       } else {
         setFilteredResults(data.data);
         setSize(data.size);
         setSkip(0);
+        setLoading(false);
       }
     });
   };
@@ -122,13 +128,17 @@ const Shop = () => {
 
         <div className="col-8">
           <h2 className="mb-4">Products</h2>
-          <div className="row">
-            {filteredResults.map((product, i) => (
-              <div key={i} className="col-4 mb-3">
-                <Card product={product} />
-              </div>
-            ))}
-          </div>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="row">
+              {filteredResults.map((product, i) => (
+                <div key={i} className="col-4 mb-3">
+                  <Card product={product} />
+                </div>
+              ))}
+            </div>
+          )}
           <hr />
           {loadMoreButton()}
         </div>

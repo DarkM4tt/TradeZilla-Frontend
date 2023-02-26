@@ -1,65 +1,81 @@
-import React, { useState, useEffect } from 'react'
-import Layout from './Layout'
-import { getProducts } from './apiCore'
-import Card from './Card'
-import Search from './Search'
+import React, { useState, useEffect } from "react";
+import Layout from "./Layout";
+import { getProducts } from "./apiCore";
+import Card from "./Card";
+import Search from "./Search";
 
 const Home = () => {
-  const [productsBySell, setProductsBySell] = useState([])
-  const [productsByArrival, setProductsByArrival] = useState([])
-  const [error, setError] = useState(false)
+  const [productsBySell, setProductsBySell] = useState([]);
+  const [productsByArrival, setProductsByArrival] = useState([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const loadProductsBySell = () => {
-    getProducts('sold').then((data) => {
+    setLoading(true);
+    getProducts("sold").then((data) => {
       if (data.error) {
-        setError(data.error)
+        setError(data.error);
+        setLoading(false);
       } else {
-        setProductsBySell(data)
+        setProductsBySell(data);
+        setLoading(false);
       }
-    })
-  }
+    });
+  };
 
   const loadProductsByArrival = () => {
-    getProducts('createdAt').then((data) => {
+    setLoading(true);
+    getProducts("createdAt").then((data) => {
       if (data.error) {
-        setError(data.error)
+        setError(data.error);
+        setLoading(false);
       } else {
-        setProductsByArrival(data)
+        setProductsByArrival(data);
+        setLoading(false);
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    loadProductsByArrival()
-    loadProductsBySell()
-  }, [])
+    loadProductsByArrival();
+    loadProductsBySell();
+  }, []);
 
   return (
     <Layout
-      title="Home Page"
-      description="Node React E-Commerce App"
+      title="TradeZilla"
+      description="React Node E-Commerce App"
       className="container-fluid"
     >
       <Search />
       <h2 className="mb-4">New Arrivals</h2>
-      <div className="row">
-        {productsByArrival.map((product, i) => (
-          <div key={i} className="col-4 mb-3">
-            <Card product={product} />
-          </div>
-        ))}
-      </div>
+
+      {loading ? (
+        <p>Loading(Could take a minute to fetch from backend)...........</p>
+      ) : (
+        <div className="row">
+          {productsByArrival.map((product, i) => (
+            <div key={i} className="col-4 mb-3">
+              <Card product={product} />
+            </div>
+          ))}
+        </div>
+      )}
 
       <h2 className="mb-4">Best Sellers</h2>
-      <div className="row">
-        {productsBySell.map((product, i) => (
-          <div key={i} className="col-4 mb-3">
-            <Card product={product} />
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <p>Loading(Could take a minute to fetch from backend)..........</p>
+      ) : (
+        <div className="row">
+          {productsBySell.map((product, i) => (
+            <div key={i} className="col-4 mb-3">
+              <Card product={product} />
+            </div>
+          ))}
+        </div>
+      )}
     </Layout>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
